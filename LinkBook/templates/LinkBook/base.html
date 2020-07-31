@@ -1,0 +1,180 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>LinkIt</title>
+    {% endif %}
+    <link rel="shortcut icon" href="{% static 'LinkBook/fevi.ico' %}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Hind+Madurai&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        ul li a{
+            padding:5px 10px 5px 10px;
+            margin-left:10px;
+            margin-right:10px;
+            font-size:16px;
+        }
+
+        ul a{
+        margin-left:10px;
+        margin-right:10px;
+        font-size:16px;
+        }
+        ul li a:active{
+        color:black;
+        }
+        ul a:active{
+        color:black;
+        }
+        body{
+            background:url("{% static 'LinkBook/content.jpg' %}")  fixed;
+            background-size:cover;
+        }
+        .book{
+        transition:0.2s ease;
+        }
+        .book:hover{
+            box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.175) !important;
+
+        }
+        .books{
+        transition:0.2s ease;
+        }
+        .books:hover{
+        box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.175) !important;
+            cursor:pointer;
+        }
+
+
+        #animate {
+        animation-name :animate;
+        animation-duration : 2s;
+        animation-iteration-count:1;
+
+        }
+        .image img{
+             max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+        @media only screen and (max-width: 770px) {
+            .stuff{
+            display:none;
+            }
+        }
+
+        @keyframes animate {
+            25%{
+            position:absolute;
+            left:-100%
+            }
+            50%{
+            position:absolute;
+            left:15px;
+            }
+            75%{
+            position:absolute;
+            left:30px;
+            }
+            100%{
+            position:absolute;
+            left:15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md bg-light navbar-light sticky-top ">
+
+        <a class="navbar-brand " href="{% url 'LinkHome' %}" style="font-family: 'Montserrat', sans-serif; font-size:27px;"><img src="{% static 'LinkBook/Capture1.jpg' %}" width="80px" height="40px" class="rounded-lg shadow"></a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navres" style="position:relative;"><span class="navbar-toggler-icon"></span></button>
+
+        <div class="collapse navbar-collapse" id="navres" style="font-family: 'Montserrat', sans-serif;">
+            <ul class="navbar-nav leftnav ml-3">
+            <li class="nav-item"><a class="nav-link active" href="{% url 'LinkHome' %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'trending' %}">Trending</a></li>
+                <li class="nav-item "><a class="nav-link" href="{% url 'user' %}">My Stuff</a></li>
+            <li class="nav-item "><a class="nav-link" href="#">About</a></li>
+        </ul>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navres" style="font-family: 'Montserrat', sans-serif;">
+            <ul class="navbar-nav rightnav ml-auto">
+                {% if user.is_authenticated %}
+
+                    <a class="nav-item nav-link" >{{ user.username }}</a>
+                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% provider_login_url 'google' %}" class="nav-item nav-link mr-2"><img class="" width="20px" style="" alt="Google sign-in"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                    Sign-In</a>
+                    <a class="nav-item nav-link" href="#myModal" data-toggle="modal">Login</a>
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+    <div class="modal" id="myModal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Login to continue</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <!-- Modal body -->
+                          <form method="POST" action="{% url 'login' %}" class="modal-body">
+                              {% csrf_token %}
+                            <div class="form-group">
+                                <label for="user">Username : </label>
+                                <input type="text" class="form-control" id="user" name="username" placeholder="Enter Username" required>
+                            </div>
+                              <div class="form-group">
+                                <label for="pass">Password : </label>
+                                <input type="password" class="form-control" id="pass" name="password" placeholder="Enter password" required>
+                            </div>
+                              <button class="btn btn-primary" type="submit">Login</button>
+                          </form>
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                </div>
+    <main class="content container-fluid text-white pb-3" >
+        {% if messages %}
+            {% for i in messages %}
+                <div class="alert alert-{{ i.tags }}">
+                    {{ i }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

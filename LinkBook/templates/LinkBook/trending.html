@@ -1,0 +1,51 @@
+{% extends "LinkBook/base.html" %}
+{% load static %}
+{% load socialaccount %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="conatiner-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                        <div class="container mt-5 pt-3" style="position:fixed; width:300px;">
+                            <div class="navbar bg-light stuff w-50 rounded mt-5" >
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'userbooks' %}">My Books</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'trending' %}">News Feeds</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'trending' %}">Share Link</a>
+                        </li>
+                    </ul>
+                </div>
+                 </div>
+            </div>
+             <div class="col-md-6 mt-5">
+                <div class="container  text-muted mt-4 mb-4">
+
+                        {% for news, desc, i, li in mylist %}
+                            <div class="container bg-light book mt-4 mb-4 pl-2 pr-2 pt-2 pb-2 rounded ">
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <h4>{{ news }}</h4>
+                                        <p>{{ desc }}</p>
+                                        <small>for full article <a href="{{ li }}" target="_blank">visit here</a></small>
+                                       <p class="mt-3">share link : <a href="https://www.facebook.com/sharer/sharer.php?u={{ li }}" target="_blank" class="mr-2"><img src="{% static 'LinkBook/facebook.png' %}" class="rounded-lg" width="25px" height="25px"></a> <a href="https://wa.me/?text={{ li }}" target="_blank" class="mr-3"><img src="{% static 'LinkBook/whatsapp.png' %}"></a></p>
+                                    </div>
+                                    <div class="col-lg-5 image mt-3">
+                                        <img src="{{ i }}" width="250px" class="mt-3 rounded-lg shadow-lg" height="auto">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                </div>
+            </div>
+             <div class="col-md-3">
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

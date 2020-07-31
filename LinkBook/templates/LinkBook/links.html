@@ -1,0 +1,111 @@
+{% extends "LinkBook/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-md-3">
+                    <div class="container mt-5 pt-1">
+                    <a class="btn btn-light btn-lg rounded-circle float-right text-white" href="#createlink" data-toggle="modal" title="add link"><i class="fas fa-plus" style="color:blue;"></i></a>
+                    <div class="modal" id="createlink">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                          <h4 class="modal-title text-primary">Add Link</h4>
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <form class="linkform text-primary" action="{% url 'createlink' %}" method="POST">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="name">Name:</label>
+                                                    <input type="text" id="name" name="namelink" class="form-control" placeholder="Enter name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="url">Url:</label>
+                                                    <input type="url" id="url" name="url" class="form-control" placeholder="Enter url" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="desc">Description:</label>
+                                                    <input type="text" id="desc" name="desc" class="form-control" placeholder="Enter description" required>
+                                                </div>
+                                                <div class="form-group">
+                                                      <label for="sel1">Select list:</label>
+                                                      <select class="form-control" id="sel1" name="select" >
+                                                        <option>{{ book.name }}</option>
+                                                      </select>
+                                                    </div>
+                                                <button class="btn btn-primary" type="submit">Add link</button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                </div>
+                 <div class="container mt-5 pt-3">
+                            <div class="navbar bg-light w-50 rounded mt-5">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'userbooks' %}">My Books</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'trending' %}">News Feeds</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'trending' %}">Share Link</a>
+                        </li>
+                    </ul>
+                </div>
+                 </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2">
+                <div class="container   mt-4 rounded-lg text-primary pt-2 pb-2" style="font-family: 'Montserrat', sans-serif;">
+                    <div class="row bg-light rounded-lg mb-5 pt-3 book pb-2">
+                        <div class="col-sm-8">
+                            <h1>Your Links </h1>
+                        </div>
+                        <div class="col-sm-4">
+                            <h4 class="text-right mt-2"><span class="badge badge-primary">{{ le }}</span></h4>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="container mt-2">
+                    {% for i in links %}
+                        <div class="row bg-light text-primary pt-2 pb-2 border ml-2 mr-2 rounded mt-3 mb-3 books" >
+                            <div class="col-sm-8 ">
+                                <a href="{{ i.link }}" target="_blank" data-toggle="tooltip" title="visit link" class="text-primary mb-2" style="text-decoration:none;"><h6 class="">{{ i.name }}</h6></a>
+                                <a href="{{ i.link }}" target="_blank"><h5 class="text-muted ">{{ i.description }}</h5></a>
+
+
+                            </div>
+                            <div class="col-sm-4 pb-2">
+                                <h6 class="text-right text-muted">{{ i.date|date:"F d, Y" }}</h6>
+                                <a href="{% url 'deletelink' i.id %}" class="btn btn-danger float-right ml-2">Delete</a>
+
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-3 ">
+
+            </div>
+        </div>
+    </div>
+<script>
+
+</script>
+{% endblock content %}

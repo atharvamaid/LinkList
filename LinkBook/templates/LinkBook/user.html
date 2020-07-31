@@ -1,0 +1,119 @@
+{% extends "LinkBook/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid mt-3" style="font-family: 'Montserrat', sans-serif;">
+        <div class="row">
+            <div class="col-md-2 mt-5">
+                <div class="navbar bg-light w-75 rounded mt-5">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'userbooks' %}">My Books</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'trending' %}">News Feeds</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="{% url 'trending' %}">Share Link</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-5 mt-4">
+                <div class="container bg-light d-flex justify-content-center rounded-lg book mt-4 pt-3 pb-3">
+                    <a href="#bookmodal" data-toggle="modal" class="mt-2 mr-3"><i class="fas fa-book fa-lg"></i></a>
+                    <a href="#bookmodal" data-toggle="modal" style="text-decoration:none;" ><h2 class="text-primary">Create New Book</h2></a>
+
+                </div>
+                 <div class="modal" id="bookmodal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title " style="color:black;">Creating Book</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <!-- Modal body -->
+                          <form method="POST" action="{% url 'createbook' %}" class="modal-body">
+                              {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name" style="color:black;">Name : </label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name of the book" required>
+                            </div>
+
+                              <button class="btn btn-primary" type="submit">Create Book</button>
+                          </form>
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-5 mt-4">
+
+                  <div class="container bg-light d-flex justify-content-center rounded-lg book mt-4 pt-3 pb-3">
+                    <a href="#linkmodal" class="mt-2 mr-3"><i class="fas fa-link fa-lg"></i></a>
+                    <a href="#linkmodal" style="text-decoration:none;" data-toggle="modal"><h2 class="text-primary">Create New Link</h2></a>
+                    <div class="modal" id="linkmodal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title " style="color:black;">Creating Link </h4>
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <!-- Modal body -->
+                          {% if books %}
+                                <form method="POST" action="{% url 'createlink' %}" class="modal-body">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                <label for="name1" style="color:black;">Name : </label>
+                                <input type="text" class="form-control" id="name1" name="namelink" placeholder="Enter name of the link" required>
+                                </div>
+                                <div class="form-group">
+                                <label for="url" style="color:black;">Url : </label>
+                                <input type="text" class="form-control" id="url" name="url" placeholder="Enter Url" required>
+                                </div>
+                                <div class="form-group">
+                                <label for="desc" style="color:black;">Description : </label>
+                                <input type="text" class="form-control" id="desc" name="desc" placeholder="Enter description" required>
+                                </div>
+                                <div class="form-group">
+                                  <label for="sel1" class="" style="color:black;">Select book:</label>
+                                  <select class="form-control" id="sel1" name="select" required>
+                                    {% for i in books %}
+                                        <option>{{ i.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+
+                                <button class="btn btn-primary" type="submit">Create Link</button>
+                                </form>
+                          {% else %}
+                                <h5 class="text-primary ml-3">Create a book first </h5>
+                          {% endif %}
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
